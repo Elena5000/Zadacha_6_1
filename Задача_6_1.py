@@ -14,7 +14,7 @@ class Student:
             for val in self.grades.values():
                 grade_sum += sum(val)
                 counter += len(val)
-            return grade_sum/counter
+            return round((grade_sum/counter),2)
         else:
             return 0
 
@@ -67,13 +67,13 @@ class Lecturer(Mentor):
             for val in self.grades.values():
                 grade_sum += sum(val)
                 counter += len(val)
-            return grade_sum/counter
+            return round((grade_sum/counter), 2)
         else:
             return 0
 
     def __str__(self):
         return (f'Имя: {self.name} \nФамилия: {self.surname} \n'
-                +f'Средняя оценка за лекции: {round(self.calculate_av_grade()),2}\n')
+                +f'Средняя оценка за лекции: {self.calculate_av_grade()}\n')
 
     def __lt__(self, other):
         return self.calculate_av_grade() < other.calculate_av_grade()
@@ -81,28 +81,30 @@ class Lecturer(Mentor):
         return self.calculate_av_grade() > other.calculate_av_grade()
 
 class Reviewer(Mentor):
-
     def __str__(self):
         return f'Имя: {self.name}\nФамилия: {self.surname}\n'
 
-
+# создаем студента
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
 best_student.finished_courses += ['Java']
-
+# создаем 2 студента
 second_best_student = Student('Bim', 'Lan', 'your_gender')
-best_student.courses_in_progress += ['Python']
-best_student.finished_courses += ['Java']
-
+second_best_student.courses_in_progress += ['Python']
+second_best_student.finished_courses += ['Java']
+# создаем лектора
 best_lecturer = Lecturer('Jon', 'Snow')
 best_lecturer.courses_attached += ['Python']
-
+# создаем 2 лектора
 second_best_lecturer = Lecturer('Jan', 'Sok')
-best_lecturer.courses_attached += ['Python']
-
+second_best_lecturer.courses_attached += ['Python']
+# создаем ревьювера
 
 best_reviewer = Reviewer('Вася', 'Пупкин')
+best_reviewer.courses_attached += ["Python"]
+# создаем 2 ревьювера
 second_best_reviewer = Reviewer('Маня', 'Чашкина')
+# best_reviewer.rate_hw()
 
 cool_mentor = Mentor('Some', 'Buddy')
 cool_mentor.courses_attached += ['Python']
@@ -110,15 +112,16 @@ cool_mentor.courses_attached += ['Python']
 cool_mentor.rate_hw(best_student, 'Python', 8)
 cool_mentor.rate_hw(best_student, 'Python', 6)
 cool_mentor.rate_hw(best_student, 'Python', 10)
-# cool_mentor.rate_hw(second_best_student, 'Python', 3)
-# cool_mentor.rate_hw(second_best_student, 'Python', 5)
-# cool_mentor.rate_hw(second_best_student, 'Python', 10)
+best_reviewer.rate_hw(second_best_student, 'Python', 3)
+best_reviewer.rate_hw(second_best_student, 'Python', 6)
+best_reviewer.rate_hw(second_best_student, 'Python', 9)
 best_student.rate_lec(best_lecturer,'Python', 5)
 best_student.rate_lec(best_lecturer,'Python', 2)
 best_student.rate_lec(best_lecturer,'Python', 10)
-# second_best_student.rate_lec(best_lecturer,'Python', 5)
-# second_best_student.rate_lec(best_lecturer,'Python', 2)
-# second_best_student.rate_lec(best_lecturer,'Python', 10)
+second_best_student.rate_lec(second_best_lecturer,'Python', 10)
+second_best_student.rate_lec(second_best_lecturer,'Python', 10)
+second_best_student.rate_lec(second_best_lecturer,'Python', 10)
+
 
 if best_student > second_best_student:
     print(f'Лучший студент \n{best_student}')
@@ -142,7 +145,7 @@ def av_grade_students(students, course):
         for s in  students:
             if course in s.courses_in_progress and s.grades[course] != 0:
                 grades += [sum(s.grades[course])/len(s.grades[course])]
-        return sum(grades)/len(students)
+        return round(sum(grades)/len(students), 2)
     else:
         return 0
 def av_grade_lecturers(lecturers, course):
@@ -151,7 +154,7 @@ def av_grade_lecturers(lecturers, course):
         for l in  lecturers:
             if course in l.courses_attached and l.grades[course] != 0:
                 grades += [sum(l.grades[course])/len(l.grades[course])]
-        return sum(grades)/len(lecturers)
+        return round(sum(grades)/len(lecturers), 2)
     else:
         return 0
 
@@ -164,5 +167,7 @@ print(f'Студент\n{second_best_student}')
 print(f'Лектор\n{second_best_lecturer}')
 print(f'Ревьювер\n{second_best_reviewer}')
 print("**************************")
-print(f'Средняя оценка среди студентов: {round(av_grade_students(students,"Python")),2}')
-print(f'Средняя оценка среди лекторов: {round(av_grade_lecturers(lecturers,"Python")),2}')
+course_1 = "Python"
+
+print(f'Средняя оценка среди студентов по курсу {course_1}: {av_grade_students(students, course_1)}')
+print(f'Средняя оценка среди лекторов по курсу {course_1}: {av_grade_lecturers(lecturers, course_1)}')
